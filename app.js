@@ -1,13 +1,13 @@
-var express = require("express");
+var express = require('express');
 
 var app = express();
 
-var port = 8088;
+app.set('port', (process.env.PORT || 8888));
 
-app.get("/", function(req, res){
-	res.send("Hello world");
+app.get('/', function(req, res){
+	res.send('Hello world');
 });
 
-app.listen(port, function(err){
-	console.log("running server on port " + port);
+app.listen(app.get('port'), function(err){
+	console.log('running server on port ' + app.get('port'));
 });
