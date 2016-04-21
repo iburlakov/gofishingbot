@@ -8,24 +8,48 @@ var app = express();
 var TOKEN = process.env.BOT_TOKEN;
 var API_URL = 'https://api.telegram.org/bot';
 
+
 app.set('port', (process.env.PORT || 8888));
 
 app.use(bodyParser.json());
 
 
-var options = {
-	uri: API_URL + API_URL + '/setWebhook',
-	method: 'POST',
-	json: {
-		url: 'https://gofishingbot.iburlakov.com/telegram-web-hook'
-	}
-};
+console.log('getMe');
+request(
+	{
+		uri: API_URL + TOKEN + '/getMe',
+		method: 'GET'
+	},
+	function(error, response, body) {
+		var result = JSON.parse(body);
+		if (!error && response.statusCode == 200) {
+			console.log("%s is ready", result.result.username)
+		} else {
+			console.log("Bot is not ready, getMe returned %d (%s)", response.statusCode, result.description);
+		}
+	});
 
-request(options, function(error, response, body) {
-	if(!error && respo.statusCode == 200) {
-		console.log("OK - web hook registered");
-	}
-};
+console.log('setWebhook');
+request({
+		uri: API_URL + TOKEN + '/setWebhook',
+		method: 'POST',
+		json: {
+			url: 'https://gofishingbot.iburlakov.com/telegram-web-hook'
+		}
+	},
+	function(error, response, body) {
+		if (!error && response.statusCode == 200) {
+			if (body.ok) {
+				console.log("Webhook is set");
+			} else {
+				console.log("Setting webhook failed: %s", result.description);
+			}
+		} else {
+			console.log("Setting webhook failed: %d", response.statusCode);
+		}
+	});
+
+//console.log('setting web hook');
 
 app.get('/', function(req, res){
 	res.send('Hello world');
@@ -43,9 +67,13 @@ app.get('/telegram-web-hook', function(req, res){
 });
 
 app.post('/telegram-web-hook', function(req, res){
-	console.log('got POST request: ' + req.body.update);
+	var data = JSON.parse(req.body);
 
-	res.json(req.body);
+	console.log('Got message from %s: %s', data.Message.User.id, data.Message.text);
+
+	//TODO: send mesage back
+
+	res.send(200);
 });
 
 app.listen(app.get('port'), function(err){
