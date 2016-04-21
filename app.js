@@ -66,11 +66,11 @@ app.post('/telegram-web-hook', function(req, res){
 	console.log('Got message from %s: %s', data.message.from.first_name, data.message.text);
 
 	request({
-	        uri: API_URL + TOKEN + '/getMe',
+	        uri: API_URL + TOKEN + '/sendMessage',
 	        method: 'POST',
 			json: {
-				chat_id:data.message.chat.id,
-				text: data.message.text + ' go fishing'
+				chat_id: data.message.chat.id,
+				text: 'go fishing'
 		}},
 		function (error, response, body) {
 			if (response.statusCode == 200 && body.ok) {
