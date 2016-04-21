@@ -34,7 +34,7 @@ request({
 		uri: API_URL + TOKEN + '/setWebhook',
 		method: 'POST',
 		json: {
-			url: 'https://gofishingbot.iburlakov.com/telegram-web-hook'
+			url: 'https://guarded-inlet-80930.herokuapp.com/telegram-web-hook'
 		}
 	},
 	function(error, response, body) {
