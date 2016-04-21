@@ -59,15 +59,9 @@ app.get('/books', function(req, res){
 	res.send('Hello books');
 });
 
-app.get('/telegram-web-hook', function(req, res){
-	console.log('got GET request: ' + req.body);
-
-	res.send(200);
-
-});
 
 app.post('/telegram-web-hook', function(req, res){
-	var data = JSON.parse(req.body);
+	var data = req.body;
 
 	console.log('Got message from %s: %s', data.Message.User.id, data.Message.text);
 
