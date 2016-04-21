@@ -72,7 +72,7 @@ app.post('/telegram-web-hook', function(req, res){
 				chat_id:data.message.chat.id,
 				text: data.message.text + ' go fishing'
 		}},
-		function (error, responce, body) {
+		function (error, response, body) {
 			if (response.statusCode == 200 && body.ok) {
 				console.log('Message send back');
 			} else {
