@@ -63,7 +63,7 @@ app.get('/books', function(req, res){
 app.post('/telegram-web-hook', function(req, res){
 	var data = req.body;
 
-	console.log('Got message from %s: %s', data.Message.User.id, data.Message.text);
+	console.log('Got message from %s: %s', data.message.from.username, data.message.text);
 
 	//TODO: send mesage back
 
