@@ -55,7 +55,7 @@ app.get('/', function(req, res){
 	res.send('Hello world');
 });
 
-app.get('/books', function(req, res){
+app.get('/books', function (req, res){
 	res.send('Hello books');
 });
 
@@ -63,9 +63,23 @@ app.get('/books', function(req, res){
 app.post('/telegram-web-hook', function(req, res){
 	var data = req.body;
 
-	console.log('Got message from %s: %s', data.message.from.username, data.message.text);
+	console.log('Got message from %s: %s', data.message.from.first_name, data.message.text);
 
-	//TODO: send mesage back
+	request({
+	        uri: API_URL + TOKEN + '/getMe',
+	        method: 'POST',
+			json: {
+				chat_id:data.message.chat.id,
+				text: data.message.text + ' go fishing'
+		}},
+		function (error, responce, body) {
+			if (response.statusCode == 200 && body.ok) {
+				console.log('Message send back');
+			} else {
+				console.log('error sending message back');
+			}
+		});
+
 
 	res.send(200);
 });
