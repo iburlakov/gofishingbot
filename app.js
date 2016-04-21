@@ -74,7 +74,8 @@ app.post('/telegram-web-hook', function(req, res){
 		}},
 		function (error, response, body) {
 			if (response.statusCode == 200 && body.ok) {
-				console.log('Message send back: ' + body);
+				console.log('Message send back:');
+				console.log(body);
 			} else {
 				console.log('Error sending message back');
 			}
