@@ -69,7 +69,7 @@ app.post('/telegram-web-hook', function(req, res){
 
 	console.log('Got message from %s: %s', data.message.from.first_name, data.message.text);
 
-	if (data.message == '?') {
+	if (data.message.text == '?') {
 		 jsdom.env('http://www.rubhoz.com/ru/prognoz_kleva_taganrog#pike',
             ['http://code.jquery.com/jquery.js'],
             function (err, window) {
