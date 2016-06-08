@@ -63,6 +63,23 @@ app.get('/books', function (req, res){
 	res.send('Hello books');
 });
 
+var sendResponse = function(chatId, data) {
+	request({
+		      uri: API_URL + TOKEN + '/sendMessage',
+		      method: 'POST',
+			json: {
+				chat_id: chatId,
+				text: data
+		}},
+		function (error, response, body) {
+			if (response.statusCode == 200 && body.ok) {
+				console.log('Message send back:');
+				console.log(body);
+			} else {
+				console.log('Error sending message back');
+			}
+		});
+}
 
 app.post('/telegram-web-hook', function(req, res){
 	var data = req.body;
@@ -70,34 +87,9 @@ app.post('/telegram-web-hook', function(req, res){
 	console.log('Got message from %s: %s', data.message.from.first_name, data.message.text);
 
 	if (data.message.text == '?') {
-		 jsdom.env('http://www.rubhoz.com/ru/prognoz_kleva_taganrog#pike',
-            ['http://code.jquery.com/jquery.js'],
-            function (err, window) {
-              // get forecast for today and next 4 days
-              var forecast = '';
-              for (var i=0; i<5; i++) {
-                var daySelector = util.format('#wd_%d .mbl-1 .name', i);
-                var forecastValueSelector = util.format('#wd_%d .mbl-5 .klev span', i);
-
-                 forecast += window.$(daySelector).text() + '  ' + window.$(forecastValueSelector).text() + '\n';
-							}
-
-                	request({
-								        uri: API_URL + TOKEN + '/sendMessage',
-								        method: 'POST',
-										json: {
-											chat_id: data.message.chat.id,
-											text: forecast
-									}},
-									function (error, response, body) {
-										if (response.statusCode == 200 && body.ok) {
-											console.log('Message send back:');
-											console.log(body);
-										} else {
-											console.log('Error sending message back');
-										}
-									});
-            });
+			new scraper().getForecast(function(data) {
+				sendResponse(data.message.chat.id, data);
+			});
 	} else {
 		request({
 	        uri: API_URL + TOKEN + '/sendMessage',
