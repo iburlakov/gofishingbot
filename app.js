@@ -87,8 +87,8 @@ app.post('/telegram-web-hook', function(req, res){
 	console.log('Got message from %s: %s', data.message.from.first_name, data.message.text);
 
 	if (data.message.text == '?') {
-			new scraper().getForecast(function(data) {
-				sendResponse(data.message.chat.id, data);
+			new scraper().getForecast(function(forecast) {
+				sendResponse(data.message.chat.id, forecast);
 			});
 	} else {
 		request({
