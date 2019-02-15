@@ -1,1 +1,3 @@
 # gofishingbot
+
+A telegram bot.
